@@ -16,6 +16,7 @@ export * from "./llms/groq";
 export * from "./llms/ollama";
 export * from "./llms/mistral";
 export * from "./llms/langchain";
+export * from "./llms/claude_code";
 export * from "./vector_stores/base";
 export * from "./vector_stores/memory";
 export * from "./vector_stores/qdrant";
