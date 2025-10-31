@@ -74,6 +74,8 @@ export class ClaudeCodeLLM implements LLM {
           includePartialMessages: false,
           permissionMode: "bypassPermissions", // Allow tool usage without prompting
           settingSources: [], // Don't load project settings or hooks to prevent recursion
+          cwd: process.cwd(), // Provide current working directory
+          pathToClaudeCodeExecutable: process.env.CLAUDE_CODE_PATH || "claude", // Use claude CLI from PATH or env var
         },
       });
 
