@@ -5,18 +5,14 @@ import { ClaudeCodeLLM } from "../../src/llms/claude_code";
 dotenv.config();
 
 async function testClaudeCode() {
-  // Check for API key
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error("ANTHROPIC_API_KEY environment variable is required");
-    process.exit(1);
-  }
-
   console.log("Testing Claude Code LLM implementation...");
-  console.log("This uses the Claude Agent SDK to spawn Claude Code sessions\n");
+  console.log("This uses the Claude Agent SDK to spawn Claude Code sessions");
+  console.log(
+    "Note: Agent SDK uses the authenticated 'claude' CLI, no API key needed\n",
+  );
 
   // Initialize ClaudeCodeLLM
   const claudeCode = new ClaudeCodeLLM({
-    apiKey: process.env.ANTHROPIC_API_KEY,
     model: "claude-sonnet-4-5-20250929",
     modelProperties: {
       maxTokens: 4096,

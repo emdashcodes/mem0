@@ -4,19 +4,10 @@ import { LLMConfig, Message } from "../types";
 
 export class ClaudeCodeLLM implements LLM {
   private model: string;
-  private apiKey: string;
   private maxTokens: number;
   private allowedTools: string[];
 
   constructor(config: LLMConfig) {
-    const apiKey = config.apiKey || process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      throw new Error(
-        "Anthropic API key is required for Claude Code LLM provider",
-      );
-    }
-
-    this.apiKey = apiKey;
     this.model = config.model || "claude-sonnet-4-5-20250929";
     this.maxTokens = config.modelProperties?.maxTokens || 4096;
 
@@ -80,6 +71,7 @@ export class ClaudeCodeLLM implements LLM {
           maxTurns: 1, // Single turn for memory generation
           includePartialMessages: false,
           permissionMode: "bypassPermissions", // Allow tool usage without prompting
+          settingSources: [], // Don't load project settings or hooks to prevent recursion
         },
       });
 
