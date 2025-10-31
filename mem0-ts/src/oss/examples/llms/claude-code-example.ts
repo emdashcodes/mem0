@@ -84,7 +84,18 @@ Return a JSON object with this structure:
     console.log("\n" + "=".repeat(60));
     console.log("Test 3: Context-aware memory generation");
     console.log("=".repeat(60));
-    const contextResponse = await claudeCode.generateResponse([
+
+    // Create a new instance with maxTurns=3 to allow tool usage
+    const claudeCodeWithTools = new ClaudeCodeLLM({
+      model: "claude-sonnet-4-5-20250929",
+      modelProperties: {
+        maxTokens: 4096,
+        maxTurns: 3, // Allow multiple turns for tool usage
+        allowedTools: ["Read", "Grep", "Glob", "Bash(ls:*)", "Bash(cat:*)"],
+      },
+    });
+
+    const contextResponse = await claudeCodeWithTools.generateResponse([
       {
         role: "system",
         content:

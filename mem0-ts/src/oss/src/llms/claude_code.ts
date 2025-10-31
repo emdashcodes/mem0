@@ -5,11 +5,13 @@ import { LLMConfig, Message } from "../types";
 export class ClaudeCodeLLM implements LLM {
   private model: string;
   private maxTokens: number;
+  private maxTurns: number;
   private allowedTools: string[];
 
   constructor(config: LLMConfig) {
     this.model = config.model || "claude-sonnet-4-5-20250929";
     this.maxTokens = config.modelProperties?.maxTokens || 4096;
+    this.maxTurns = config.modelProperties?.maxTurns || 1;
 
     // Allow Claude Code to use Read, Grep, Glob for context when generating memories
     this.allowedTools = config.modelProperties?.allowedTools || [
@@ -68,7 +70,7 @@ export class ClaudeCodeLLM implements LLM {
           model: this.model,
           systemPrompt: systemPrompt || undefined,
           allowedTools: this.allowedTools,
-          maxTurns: 1, // Single turn for memory generation
+          maxTurns: this.maxTurns, // Configurable turns (default: 1 for fast memory extraction)
           includePartialMessages: false,
           permissionMode: "bypassPermissions", // Allow tool usage without prompting
           settingSources: [], // Don't load project settings or hooks to prevent recursion
