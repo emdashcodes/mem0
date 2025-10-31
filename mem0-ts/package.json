@@ -1,6 +1,6 @@
 {
   "name": "@emdashcodes/mem0-claude-code",
-  "version": "2.1.38",
+  "version": "2.1.38-claudecode.0",
   "description": "The Memory Layer For Your AI Apps - Fork with Claude Code LLM provider support",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
