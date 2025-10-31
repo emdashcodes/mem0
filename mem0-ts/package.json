@@ -1,7 +1,7 @@
 {
-  "name": "mem0ai",
+  "name": "@emdashcodes/mem0-claude-code",
   "version": "2.1.38",
-  "description": "The Memory Layer For Your AI Apps",
+  "description": "The Memory Layer For Your AI Apps - Fork with Claude Code LLM provider support",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -72,10 +72,17 @@
     "memory",
     "llm",
     "long-term-memory",
-    "ai"
+    "ai",
+    "claude-code",
+    "anthropic"
   ],
-  "author": "Deshraj Yadav",
+  "author": "Em (fork of mem0ai by Deshraj Yadav)",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emdashcodes/mem0.git",
+    "directory": "mem0-ts"
+  },
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.1.30",
     "@types/node": "^22.7.6",

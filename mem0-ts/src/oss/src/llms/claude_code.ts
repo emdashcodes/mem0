@@ -7,11 +7,13 @@ export class ClaudeCodeLLM implements LLM {
   private maxTokens: number;
   private maxTurns: number;
   private allowedTools: string[];
+  private claudeCodePath?: string;
 
   constructor(config: LLMConfig) {
     this.model = config.model || "claude-sonnet-4-5-20250929";
     this.maxTokens = config.modelProperties?.maxTokens || 4096;
     this.maxTurns = config.modelProperties?.maxTurns || 1;
+    this.claudeCodePath = config.modelProperties?.claudeCodePath;
 
     // Allow Claude Code to use Read, Grep, Glob for context when generating memories
     this.allowedTools = config.modelProperties?.allowedTools || [
@@ -64,19 +66,25 @@ export class ClaudeCodeLLM implements LLM {
 
     try {
       // Use the Claude Agent SDK to query Claude Code
+      const queryOptions: any = {
+        model: this.model,
+        systemPrompt: systemPrompt || undefined,
+        allowedTools: this.allowedTools,
+        maxTurns: this.maxTurns, // Configurable turns (default: 1 for fast memory extraction)
+        includePartialMessages: false,
+        permissionMode: "bypassPermissions", // Allow tool usage without prompting
+        settingSources: [], // Don't load project settings or hooks to prevent recursion
+        cwd: process.cwd(), // Provide current working directory
+      };
+
+      // Only set path if explicitly configured (otherwise Agent SDK uses its default)
+      if (this.claudeCodePath) {
+        queryOptions.pathToClaudeCodeExecutable = this.claudeCodePath;
+      }
+
       const agentQuery = query({
         prompt: prompt.trim(),
-        options: {
-          model: this.model,
-          systemPrompt: systemPrompt || undefined,
-          allowedTools: this.allowedTools,
-          maxTurns: this.maxTurns, // Configurable turns (default: 1 for fast memory extraction)
-          includePartialMessages: false,
-          permissionMode: "bypassPermissions", // Allow tool usage without prompting
-          settingSources: [], // Don't load project settings or hooks to prevent recursion
-          cwd: process.cwd(), // Provide current working directory
-          pathToClaudeCodeExecutable: process.env.CLAUDE_CODE_PATH || "claude", // Use claude CLI from PATH or env var
-        },
+        options: queryOptions,
       });
 
       let responseContent = "";
